@@ -1,18 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Navigation = () => {
+  const [isDark, setIsDark] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    // TODO: Implement proper theme switching
+    console.log('Theme toggled:', !isDark ? 'dark' : 'light');
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav className="py-4">
+    <nav className="py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-700">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center">
-          <div className="text-xl font-bold">Sanjay Chilumuru</div>
-          <div className="hidden md:flex space-x-6">
-            <a href="#about" className="hover:text-blue-600">About</a>
-            <a href="#projects" className="hover:text-blue-600">Projects</a>
-            <a href="#skills" className="hover:text-blue-600">Skills</a>
-            <a href="#contact" className="hover:text-blue-600">Contact</a>
+          <div className="text-xl font-bold text-gray-800 dark:text-gray-200">Sanjay Chilumuru</div>
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
+            <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a>
+            <a href="#skills" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
+            <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
+            
+            {/* Theme Toggle */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+          </div>
+          
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleMobileMenu}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Menu - TODO: Fix mobile menu positioning */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col space-y-2 pt-4">
+              <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">About</a>
+              <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Projects</a>
+              <a href="#skills" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Skills</a>
+              <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Contact</a>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
