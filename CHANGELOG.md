@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.2] - 2025-03-03
+
+### Added
+- Enhanced About section with detailed personal story and experience timeline
+- Added experience cards with company details and skill tags
+- Implemented smooth animations with useInView for better performance
+- Added key traits section with interactive badges
+- Enhanced responsive design with glass morphism effects
+
+### Changed
+- Improved About section layout with two-column design
+- Enhanced typography and color scheme for better readability
+- Updated experience cards with better visual hierarchy
+- Improved dark mode support across About section
+
+### Known Issues
+- Experience cards may overflow on very small screens (mobile layout issue)
+- Some animations may cause layout shifts on slower devices
+- Dark mode toggle still not persistent across page refresh
+- Mobile menu positioning needs further improvement
+
 ## [0.1.1] - 2025-03-02
 
 ### Added
