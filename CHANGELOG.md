@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.3] - 2025-03-05
+
+### Added
+- Enhanced Projects section with interactive filtering (AI/ML, Web Dev, Data)
+- Added detailed project cards with technology tags and links
+- Implemented project filtering functionality with category-based filtering
+- Enhanced Skills section with detailed skill categories and progress bars
+- Added skill proficiency levels with animated progress indicators
+- Implemented "Currently Learning" section with emerging technologies
+- Added comprehensive skill categories: Frontend, Backend, Database, AI/ML, Tools
+
+### Changed
+- Improved project card layout with better visual hierarchy
+- Enhanced skill visualization with progress bars and learning indicators
+- Updated project descriptions with more detailed information
+- Improved responsive design for project and skill sections
+
+### Known Issues
+- Project filtering may cause layout shifts on mobile devices
+- Skill progress bars may not animate smoothly on low-end devices
+- Some project links may be broken (placeholder URLs)
+- Mobile layout for skills grid needs improvement on very small screens
+- Dark mode toggle still not persistent across page refresh
+
 ## [0.1.2] - 2025-03-03
 
 ### Added
