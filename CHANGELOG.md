@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.4] - 2025-03-07
+
+### Fixed
+- Improved mobile menu positioning and styling with better backdrop blur
+- Fixed mobile responsiveness issues in About section layout
+- Enhanced dark mode implementation with system preference detection
+- Improved navigation sticky positioning and z-index
+- Fixed mobile layout overflow issues in experience cards
+- Enhanced responsive typography and spacing across components
+
+### Changed
+- Updated mobile menu to close automatically when links are clicked
+- Improved dark mode toggle with proper DOM class management
+- Enhanced mobile experience cards with better responsive layout
+- Updated navigation to be sticky with proper z-index
+- Improved responsive text sizing and spacing
+
+### Known Issues
+- Dark mode preference still not saved to localStorage (TODO)
+- Some animations may still cause performance issues on very low-end devices
+- Project filtering layout shifts on very small screens
+- Skill progress bars may not animate smoothly on older devices
+
 ## [0.1.3] - 2025-03-05
 
 ### Added

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -6,18 +6,31 @@ const Navigation = () => {
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Check system preference on mount
+  useEffect(() => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setIsDark(prefersDark);
+    document.documentElement.classList.toggle('dark', prefersDark);
+  }, []);
+
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    // TODO: Implement proper theme switching
-    console.log('Theme toggled:', !isDark ? 'dark' : 'light');
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme);
+    // TODO: Save theme preference to localStorage
+    console.log('Theme toggled:', newTheme ? 'dark' : 'light');
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <nav className="py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-700">
+    <nav className="py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-700 sticky top-0 z-50">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center">
           <div className="text-xl font-bold text-gray-800 dark:text-gray-200">Sanjay Chilumuru</div>
@@ -61,14 +74,38 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* Mobile Menu - TODO: Fix mobile menu positioning */}
+        {/* Mobile Menu - Fixed positioning */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-b-lg shadow-lg">
             <div className="flex flex-col space-y-2 pt-4">
-              <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">About</a>
-              <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Projects</a>
-              <a href="#skills" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Skills</a>
-              <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2">Contact</a>
+              <a 
+                href="#about" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                About
+              </a>
+              <a 
+                href="#projects" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                Projects
+              </a>
+              <a 
+                href="#skills" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                Skills
+              </a>
+              <a 
+                href="#contact" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                Contact
+              </a>
             </div>
           </div>
         )}
