@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.5] - 2025-03-10
+
+### Added
+- Implemented comprehensive Contact section with working contact form
+- Added contact form with validation and submission simulation
+- Added contact information cards with email, phone, and location
+- Implemented social media links with hover effects
+- Added form submission feedback with success messages
+- Enhanced Contact section with responsive design and animations
+- Added "Quick Response" information card
+
+### Changed
+- Replaced placeholder Contact section with fully functional component
+- Improved form accessibility with proper labels and validation
+- Enhanced mobile responsiveness for contact form and information cards
+- Added loading states and user feedback for form submission
+
+### Known Issues
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+- Form validation could be more comprehensive
+- Dark mode preference still not saved to localStorage
+- Some animations may still cause performance issues on very low-end devices
+
 ## [0.1.4] - 2025-03-07
 
 ### Fixed
