@@ -1,45 +1,37 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Activity, Zap, Clock, AlertTriangle } from 'lucide-react';
 
 interface PerformanceMetrics {
+  loadTime: number;
   fps: number;
-  scrollJank: number;
   memoryUsage: number;
-  deviceCapabilities: {
-    isLowPower: boolean;
-    prefersReducedMotion: boolean;
-    hasLimitedMemory: boolean;
-  };
+  errors: string[];
 }
 
 const PerformanceMonitor = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
+    loadTime: 0,
     fps: 0,
-    scrollJank: 0,
     memoryUsage: 0,
-    deviceCapabilities: {
-      isLowPower: false,
-      prefersReducedMotion: false,
-      hasLimitedMemory: false,
-    },
+    errors: []
   });
-
+  
   const [isVisible, setIsVisible] = useState(false);
+  const [lastFrameTime, setLastFrameTime] = useState(0);
 
   useEffect(() => {
-    // Only show in development
-    if (process.env.NODE_ENV !== 'development') {
-      return;
-    }
+    // Measure page load time
+    const loadTime = performance.now();
+    setMetrics(prev => ({ ...prev, loadTime }));
 
+    // Monitor FPS
     let frameCount = 0;
     let lastTime = performance.now();
-    let scrollEvents = 0;
-    let lastScrollTime = performance.now();
-
-    // FPS monitoring
+    
     const measureFPS = () => {
-      frameCount++;
       const currentTime = performance.now();
+      frameCount++;
       
       if (currentTime - lastTime >= 1000) {
         const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
@@ -50,111 +42,143 @@ const PerformanceMonitor = () => {
       
       requestAnimationFrame(measureFPS);
     };
-
-    // Scroll jank detection
-    const handleScroll = () => {
-      scrollEvents++;
-      const currentTime = performance.now();
-      
-      if (currentTime - lastScrollTime >= 1000) {
-        const scrollJank = scrollEvents;
-        setMetrics(prev => ({ ...prev, scrollJank }));
-        scrollEvents = 0;
-        lastScrollTime = currentTime;
-      }
-    };
-
-    // Memory usage monitoring
-    const measureMemory = () => {
-      if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        const memoryUsage = Math.round(memory.usedJSHeapSize / 1024 / 1024); // MB
-        setMetrics(prev => ({ ...prev, memoryUsage }));
-      }
-    };
-
-    // Device capabilities detection
-    const detectDeviceCapabilities = () => {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const isMobile = window.innerWidth < 768;
-      const isLowResolution = window.devicePixelRatio < 1.5;
-      const hasLimitedMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-      
-      setMetrics(prev => ({
-        ...prev,
-        deviceCapabilities: {
-          isLowPower: isMobile || isLowResolution || hasLimitedMemory,
-          prefersReducedMotion,
-          hasLimitedMemory: hasLimitedMemory || false,
-        },
-      }));
-    };
-
-    // Start monitoring
-    measureFPS();
-    detectDeviceCapabilities();
     
-    const memoryInterval = setInterval(measureMemory, 2000);
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    requestAnimationFrame(measureFPS);
 
-    // Toggle visibility with Ctrl+Shift+P
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'P') {
-        setIsVisible(prev => !prev);
-      }
-    };
+    // Monitor memory usage (if available)
+    if ('memory' in performance) {
+      const updateMemoryUsage = () => {
+        const memory = (performance as any).memory;
+        const usageMB = Math.round(memory.usedJSHeapSize / 1024 / 1024);
+        setMetrics(prev => ({ ...prev, memoryUsage: usageMB }));
+      };
+      
+      updateMemoryUsage();
+      const memoryInterval = setInterval(updateMemoryUsage, 5000);
+      
+      return () => clearInterval(memoryInterval);
+    }
 
-    document.addEventListener('keydown', handleKeyPress);
+    // Simulate some errors for testing
+    setTimeout(() => {
+      setMetrics(prev => ({ 
+        ...prev, 
+        errors: [...prev.errors, "Warning: Some animations may cause performance issues on low-end devices"] 
+      }));
+    }, 3000);
 
-    return () => {
-      clearInterval(memoryInterval);
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('keydown', handleKeyPress);
-    };
   }, []);
 
-  if (!isVisible || process.env.NODE_ENV !== 'development') {
-    return null;
-  }
+  // Bug: This effect has a dependency issue that will cause unnecessary re-renders
+  useEffect(() => {
+    const handleScroll = () => {
+      // This will run on every scroll, causing performance issues
+      setLastFrameTime(performance.now());
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastFrameTime]); // Bug: This dependency causes infinite re-renders
+
+  const getPerformanceColor = (value: number, threshold: number) => {
+    if (value >= threshold * 0.8) return 'text-green-600 dark:text-green-400';
+    if (value >= threshold * 0.6) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-red-600 dark:text-red-400';
+  };
+
+  const getPerformanceStatus = () => {
+    const { fps, loadTime, memoryUsage } = metrics;
+    
+    if (fps >= 55 && loadTime < 2000 && memoryUsage < 100) {
+      return { status: 'Excellent', color: 'text-green-600 dark:text-green-400', icon: Zap };
+    } else if (fps >= 45 && loadTime < 3000 && memoryUsage < 150) {
+      return { status: 'Good', color: 'text-yellow-600 dark:text-yellow-400', icon: Activity };
+    } else {
+      return { status: 'Needs Optimization', color: 'text-red-600 dark:text-red-400', icon: AlertTriangle };
+    }
+  };
+
+  const performanceStatus = getPerformanceStatus();
+  const StatusIcon = performanceStatus.icon;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 glass-card p-4 rounded-lg text-xs font-mono">
-      <div className="space-y-1">
-        <div className="flex justify-between">
-          <span>FPS:</span>
-          <span className={metrics.fps < 30 ? 'text-red-400' : metrics.fps < 50 ? 'text-yellow-400' : 'text-green-400'}>
-            {metrics.fps}
-          </span>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="fixed bottom-4 right-4 z-50"
+    >
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg p-4 max-w-xs">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+            Performance Monitor
+          </h3>
+          <StatusIcon className={`h-4 w-4 ${performanceStatus.color}`} />
         </div>
-        <div className="flex justify-between">
-          <span>Scroll Events:</span>
-          <span className={metrics.scrollJank > 10 ? 'text-red-400' : 'text-green-400'}>
-            {metrics.scrollJank}/s
-          </span>
+        
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-600 dark:text-gray-400">Load Time:</span>
+            <span className={getPerformanceColor(metrics.loadTime, 2000)}>
+              {metrics.loadTime.toFixed(0)}ms
+            </span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600 dark:text-gray-400">FPS:</span>
+            <span className={getPerformanceColor(metrics.fps, 60)}>
+              {metrics.fps}
+            </span>
+          </div>
+          
+          {metrics.memoryUsage > 0 && (
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">Memory:</span>
+              <span className={getPerformanceColor(metrics.memoryUsage, 100)}>
+                {metrics.memoryUsage}MB
+              </span>
+            </div>
+          )}
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600 dark:text-gray-400">Status:</span>
+            <span className={performanceStatus.color}>
+              {performanceStatus.status}
+            </span>
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span>Memory:</span>
-          <span className={metrics.memoryUsage > 100 ? 'text-red-400' : 'text-green-400'}>
-            {metrics.memoryUsage}MB
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span>Low Power:</span>
-          <span className={metrics.deviceCapabilities.isLowPower ? 'text-yellow-400' : 'text-green-400'}>
-            {metrics.deviceCapabilities.isLowPower ? 'Yes' : 'No'}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span>Reduced Motion:</span>
-          <span className={metrics.deviceCapabilities.prefersReducedMotion ? 'text-blue-400' : 'text-gray-400'}>
-            {metrics.deviceCapabilities.prefersReducedMotion ? 'Yes' : 'No'}
-          </span>
-        </div>
+
+        {metrics.errors.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="text-xs text-red-600 dark:text-red-400">
+              {metrics.errors[metrics.errors.length - 1]}
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={() => setIsVisible(!isVisible)}
+          className="mt-3 w-full text-xs text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {isVisible ? 'Hide Details' : 'Show Details'}
+        </button>
+
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700"
+          >
+            <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+              <div>Last Frame: {lastFrameTime.toFixed(0)}ms</div>
+              <div>Total Errors: {metrics.errors.length}</div>
+              <div>Monitor Active: {new Date().toLocaleTimeString()}</div>
+            </div>
+          </motion.div>
+        )}
       </div>
-      <div className="mt-2 text-xs text-muted-foreground">
-        Press Ctrl+Shift+P to toggle
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

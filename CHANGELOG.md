@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.1.6] - 2025-03-12
+
+### Added
+- Implemented PerformanceMonitor component for real-time performance tracking
+- Added FPS monitoring and memory usage tracking
+- Enhanced Hero component with dynamic particle animations
+- Added performance status indicators with color-coded metrics
+- Implemented scroll performance monitoring
+- Added performance error detection and reporting
+
+### Changed
+- Updated Hero component with more dynamic particle system
+- Enhanced particle animations with varying sizes and durations
+- Improved performance monitoring with detailed metrics display
+- Added performance status categorization (Excellent, Good, Needs Optimization)
+
+### Known Issues
+- PerformanceMonitor has dependency array bug causing infinite re-renders
+- Hero component particle system causes unnecessary re-renders every second
+- Scroll event listener in PerformanceMonitor causes performance issues
+- Particle count increases indefinitely, causing memory leaks
+- Some animations may cause performance issues on low-end devices
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+- Dark mode preference still not saved to localStorage
+
 ## [0.1.5] - 2025-03-10
 
 ### Added
