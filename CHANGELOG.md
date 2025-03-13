@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.1.7] - 2025-03-13
+
+### Added
+- Implemented comprehensive Footer component with social links and branding
+- Added footer with three-column layout (Brand, Quick Links, Social)
+- Added "Made with love" branding with tech stack credits
+- Implemented footer animations with staggered entrance effects
+- Added copyright information and tech stack display
+- Enhanced overall page structure with proper footer integration
+
+### Changed
+- Updated Index page to include Footer component
+- Improved page structure with complete layout
+- Enhanced social media links with hover animations
+- Added responsive footer design for mobile and desktop
+
+### Known Issues
+- PerformanceMonitor has dependency array bug causing infinite re-renders
+- Hero component particle system causes unnecessary re-renders every second
+- Scroll event listener in PerformanceMonitor causes performance issues
+- Particle count increases indefinitely, causing memory leaks
+- Some animations may cause performance issues on low-end devices
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+- Dark mode preference still not saved to localStorage
+
 ## [0.1.6] - 2025-03-12
 
 ### Added
