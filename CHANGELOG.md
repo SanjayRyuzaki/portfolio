@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.8] - 2025-03-14
+
+### Added
+- Implemented ScrollToTop component with smooth scrolling and animations
+- Added reusable LoadingSpinner component with customizable size and colors
+- Enhanced Contact form with improved loading states using LoadingSpinner
+- Added theme persistence using localStorage for dark mode preference
+- Improved user experience with better loading feedback
+
+### Fixed
+- Fixed dark mode persistence across page refresh using localStorage
+- Improved theme toggle functionality with proper state management
+- Enhanced loading states in contact form submission
+
+### Changed
+- Updated Contact form to use new LoadingSpinner component
+- Improved theme detection with fallback to system preference
+- Enhanced scroll-to-top button positioning and animations
+
+### Known Issues
+- PerformanceMonitor has dependency array bug causing infinite re-renders
+- Hero component particle system causes unnecessary re-renders every second
+- Scroll event listener in PerformanceMonitor causes performance issues
+- Particle count increases indefinitely, causing memory leaks
+- Some animations may cause performance issues on low-end devices
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+
 ## [0.1.7] - 2025-03-13
 
 ### Added

@@ -6,19 +6,25 @@ const Navigation = () => {
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Check system preference on mount
+  // Check system preference and localStorage on mount
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDark(prefersDark);
-    document.documentElement.classList.toggle('dark', prefersDark);
+    
+    if (savedTheme) {
+      setIsDark(savedTheme === 'dark');
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    } else {
+      setIsDark(prefersDark);
+      document.documentElement.classList.toggle('dark', prefersDark);
+    }
   }, []);
 
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
     document.documentElement.classList.toggle('dark', newTheme);
-    // TODO: Save theme preference to localStorage
-    console.log('Theme toggled:', newTheme ? 'dark' : 'light');
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
   };
 
   const toggleMobileMenu = () => {
