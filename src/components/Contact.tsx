@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import LoadingSpinner from './LoadingSpinner';
 
 const Contact = () => {
   const ref = useRef(null);
@@ -196,7 +197,7 @@ const Contact = () => {
                   >
                     {isSubmitting ? (
                       <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <LoadingSpinner size="sm" color="blue" />
                         Sending...
                       </div>
                     ) : (
