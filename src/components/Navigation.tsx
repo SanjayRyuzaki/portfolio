@@ -46,6 +46,7 @@ const Navigation = () => {
             <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
             <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a>
             <a href="#skills" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
+            <a href="#blog" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</a>
             <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
             
             {/* Theme Toggle */}
@@ -104,6 +105,13 @@ const Navigation = () => {
                 onClick={closeMobileMenu}
               >
                 Skills
+              </a>
+              <a 
+                href="#blog" 
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                Blog
               </a>
               <a 
                 href="#contact" 
