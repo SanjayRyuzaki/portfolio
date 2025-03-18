@@ -7,17 +7,16 @@ import { Button } from '@/components/ui/button';
 const Hero = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [particleCount, setParticleCount] = useState(20);
+  const [particleCount] = useState(20); // Fixed: Removed state update that was causing memory leak
 
-  // Bug: This effect runs on every render, causing performance issues
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // This creates unnecessary re-renders
-      setParticleCount(prev => prev + 1);
-    }, 1000);
-    
-    return () => clearInterval(interval);
-  }); // Missing dependency array - this is the bug!
+  // Fixed: Removed the problematic useEffect that was increasing particle count
+  // const [particleCount, setParticleCount] = useState(20);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setParticleCount(prev => prev + 1); // This was causing the memory leak
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }); // Missing dependency array was the bug!
 
   const particles = Array.from({ length: particleCount }, (_, i) => ({
     id: i,
@@ -29,7 +28,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Floating Particles - Performance intensive */}
+      {/* Floating Particles - Performance optimized */}
       <div className="absolute inset-0 pointer-events-none">
         {particles.map((particle) => (
           <motion.div

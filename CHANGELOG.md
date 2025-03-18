@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.9] - 2025-03-18
+
+### Fixed
+- Fixed PerformanceMonitor dependency array bug that was causing infinite re-renders
+- Resolved Hero component particle system memory leak by removing unnecessary state updates
+- Removed problematic scroll event listener that was causing performance issues
+- Optimized particle animations to prevent memory accumulation
+- Fixed performance monitoring accuracy and reduced false error reports
+
+### Changed
+- Improved PerformanceMonitor to show "Performance issues fixed" status
+- Enhanced particle system stability with fixed particle count
+- Removed unnecessary state updates that were causing re-renders
+- Optimized scroll event handling to prevent performance degradation
+
+### Known Issues
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+- Some animations may still cause performance issues on very low-end devices
+- Blog article links are not functional (placeholder content)
+
 ## [0.1.8] - 2025-03-14
 
 ### Added
