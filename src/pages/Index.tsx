@@ -7,10 +7,12 @@ import Skills from '../components/Skills';
 import Blog from '../components/Blog';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import Analytics from '../components/Analytics';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Analytics pageName="Portfolio Home" />
       <Navigation />
       <Hero />
       <About />
