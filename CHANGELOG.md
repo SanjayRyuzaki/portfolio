@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.2.0] - 2025-03-22
+
+### Added
+- Enhanced SEO optimization with comprehensive meta tags
+- Added Open Graph meta tags for better social media sharing
+- Implemented Twitter Card meta tags for improved Twitter sharing
+- Added structured data (JSON-LD) for better search engine understanding
+- Enhanced HTML head section with preconnect links for performance
+- Added canonical URL and robots meta tags for SEO
+
+### Changed
+- Updated page title and description for better search visibility
+- Improved meta tags with more detailed and relevant content
+- Enhanced social media sharing with proper Open Graph tags
+- Added theme-color meta tag for mobile browser theming
+
+### Known Issues
+- Contact form currently simulates submission (needs backend integration)
+- Social media links are placeholder URLs
+- Blog article links are not functional (placeholder content)
+- Some animations may still cause performance issues on very low-end devices
+
 ## [0.1.9] - 2025-03-18
 
 ### Fixed
