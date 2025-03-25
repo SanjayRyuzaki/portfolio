@@ -14,12 +14,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Analytics pageName="Portfolio Home" />
       <Navigation />
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Blog />
-      <Contact />
+      <main id="main-content" role="main">
+        <Hero />
+        <About />
+        <Projects />
+        <Skills />
+        <Blog />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );
